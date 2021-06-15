@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.plantilla{
+			margin: 0 auto;
+			width: 400px;
+			height: 360px;
+			background-image: url(images/tablero2.png);
+			background-size: 400px, 400px, auto;
+			background-position: 0px -26px;
+		}
+
+		.linea{
+			width: 350px;
+			height: 100px;
+			margin-top: 14px;
+			margin-left: 25px;
+			margin-bottom: 23px;
+		}
+
+		.cuadro{
+			width: 100px;
+			height: 100px;
+			float: left;
+			margin-left: 11px;
+			text-align: center;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="plantilla">
+		<div class = "linea">
+			<div id = "p00" class = "cuadro" onclick="position(0,0)"></div>
+			<div id = "p01" class = "cuadro" onclick="position(0,1)"></div>
+			<div id = "p02" class = "cuadro" onclick="position(0,2)"></div>
+		</div>
+
+		<div class = "linea">
+			<div id = "p10" class = "cuadro" onclick="position(1,0)"></div>
+			<div id = "p11" class = "cuadro" onclick="position(1,1)"></div>
+			<div id = "p12" class = "cuadro" onclick="position(1,2)"></div>
+		</div>
+
+		<div class="linea">
+			<div id = "p20" class = "cuadro" onclick="position(2,0)"></div>
+			<div id = "p21" class = "cuadro" onclick="position(2,1)"></div>
+			<div id = "p22" class = "cuadro" onclick="position(2,2)"></div>
+		</div> 
+	</div>
+
+	<script type="text/javascript">
+		var i = "o";
+		var mat = [["","",""],["","",""],["","",""]];
+
+		function position(x,y){
+			console.log("x = "+x+" y = "+y);
+			i= i=="o"?"x":"o";
+			var line = "p" + x + y;
+			console.log(line);
+			document.getElementById(line).innerHTML = '<img src = "images/'+i+'.png">';
+			document.getElementById(line).removeAttribute("onclick");
+			mat[x][y] = i;
+			
+			if(valida(i)){
+				document.location.reload();
+			}
+		}
+
+		function valida(id){
+
+			var diagonal = false;
+			var horizontal = false;
+			var vertical  = false;
+			var terminado = false;
+
+			for(var i = 0; i < 3; i++){
+				if(mat[i][0] != "" && mat[i][1]!="" && mat[i][2]!="" && mat[i][0] == mat[i][1] && mat[i][1] == mat[i][2]){
+					//return "Ganaste: "+id;
+					horizontal = true;
+					terminado = true;
+					alert("Ganaste: "+id);
+				}
+
+				if(mat[0][i] != "" && mat[1][i]!="" && mat[2][i]!="" && mat[0][i] == mat[1][i] && mat[1][i] == mat[2][i]){
+					//return "Ganaste: "+id;
+					vertical = true;
+					terminado = true;
+					alert("Ganaste: "+id);
+				}
+
+			}
+
+			if(mat[0][0] != "" && mat[1][1] != "" && mat[2][2] != "" && mat[0][0] == mat[1][1] && mat[1][1] == mat[2][2]){
+				//return "Ganaste: "+id;
+				alert("Ganaste: "+id);
+				diagonal = true;
+				terminado = true;
+			}
+
+			if(mat[0][2] != "" && mat[1][1] != "" && mat[2][0] != "" && mat[0][2] == mat[1][1] && mat[1][1] == mat[2][0]){
+				//return "Ganaste: "+id;
+				alert("Ganaste: "+id);
+				diagonal = true;
+				terminado = true;
+			}
+
+			if(tablero_lleno() && diagonal == false && vertical == false && horizontal == false){
+				alert("Empate");
+				terminado = true;
+			}
+
+			return terminado;
+
+		}
+		
+		function tablero_lleno(){
+			
+			for(var i = 0; i < 3; i++){
+				for(var j = 0; j < 3; j++){
+					if(mat[i][j] == ""){
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+
+	</script>
+</body>
+</html>
